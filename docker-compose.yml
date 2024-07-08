@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    cap_add:
+      - NET_ADMIN
+
+  redis-reader:
+    build: .
+    environment:
+      - REDIS_ADDR=redis:6379
+    depends_on:
+      - redis
+    # uncomment this to test cannot assign requested address error
+    # sysctls:
+    #   - net.ipv4.ip_local_port_range=60000 60400
